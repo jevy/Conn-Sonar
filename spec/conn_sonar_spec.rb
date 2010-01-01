@@ -1,35 +1,36 @@
 require 'lib/conn_sonar.rb'
-require 'lib/sound_player.rb'
 
 describe ConnSonar do
-  before(:each) do
-    @mock_icmp = mock('icmp')
-    Net::Ping::ICMP.stub!(:new).and_return(@mock_icmp)
-  end
+  context "while playing sound" do
+    before(:each) do
+      @mock_icmp = mock('icmp')
+      Net::Ping::ICMP.stub!(:new).and_return(@mock_icmp)
+      SDL::Mixer.stub!(:playChannel)
+    end
 
-  it "should sound a ping when a ping is sent" do
-    @mock_icmp.stub!(:ping?).and_return(true)
-    SoundPlayer.should_receive(:ping)
+    it "should sound a ping when a ping is sent" do
+      @mock_icmp.stub!(:ping?).and_return(true)
+      SoundPlayer.should_receive(:ping)
 
-    c = ConnSonar.new('asdfjdfgh.com')
-    c.ping
-  end
+      c = ConnSonar.new('google.com')
+      c.ping
+    end
 
-  it "should sound a pong when a return is received" do
-    @mock_icmp.stub!(:ping?).and_return(true)
-    SoundPlayer.should_receive(:pong)
+    it "should sound a pong when a return is received" do
+      @mock_icmp.stub!(:ping?).and_return(true)
+      SoundPlayer.should_receive(:pong)
 
-    c = ConnSonar.new('asdfjdfgh.com')
-    c.ping
-  end
+      c = ConnSonar.new('google.com')
+      c.ping
+    end
 
-  it "should not sound any return when no pong is received" do
-    @mock_icmp.stub!(:ping?).and_return(false)
-    SoundPlayer.should_not_receive(:pong)
+    it "should not sound any return when no pong is received" do
+      @mock_icmp.stub!(:ping?).and_return(false)
+      SoundPlayer.should_not_receive(:pong)
 
-    c = ConnSonar.new('asdfjdfgh.com')
-    c.ping
-
+      c = ConnSonar.new('asdfjdfgh.com')
+      c.ping
+    end
   end
 
 end

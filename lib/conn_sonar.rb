@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'net/ping/icmp'
+require 'lib/sound_player.rb'
 
 class ConnSonar
   def initialize(host)
@@ -8,8 +9,8 @@ class ConnSonar
 
   def ping
     i = Net::Ping::ICMP.new(@host)
-    result = i.ping?
     SoundPlayer.ping
+    result = i.ping?
     SoundPlayer.pong if result
   end
 end
