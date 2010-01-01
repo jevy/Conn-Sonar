@@ -1,9 +1,10 @@
 require 'lib/conn_sonar.rb'
 
 describe ConnSonar do
-  context "while playing sound" do
+  context "when pinging" do
     before(:each) do
       @mock_icmp = mock('icmp')
+      @mock_icmp.stub!(:duration).and_return(0.0150)
       Net::Ping::ICMP.stub!(:new).and_return(@mock_icmp)
       SDL::Mixer.stub!(:playChannel)
     end
@@ -32,5 +33,32 @@ describe ConnSonar do
       c.ping
     end
   end
+
+  context "when ticking" do
+    before(:each) do
+      @mock_icmp = mock('icmp')
+      @mock_icmp.stub!(:ping?).and_return(true)
+      Net::Ping::ICMP.stub!(:new).and_return(@mock_icmp)
+      SDL::Mixer.stub!(:playChannel)
+    end
+
+    it 'should play 1 tick if pong takes less than 100ms' do
+      @mock_icmp.stub!(:duration).and_return(0.050)
+      SoundPlayer.should_receive(:ticks).with(1)
+
+      c = ConnSonar.new('google.com')
+      c.ping
+    end
+
+    it 'should play 2 ticks if pong takes between 100-200ms' do
+      @mock_icmp.stub!(:ping?).and_return(true)
+      @mock_icmp.stub!(:duration).and_return(0.150)
+      SoundPlayer.should_receive(:ticks).with(2)
+
+      c = ConnSonar.new('farawayplace.com')
+      c.ping
+    end
+  end
+
 
 end
