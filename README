@@ -1,1 +1,10 @@
+Author: Jevin Maltais <jevyjevjevs@gmail.com>
+
 Sounds taken from freesound.org
+
+Ping sound means: ping sent
+Pong sound means: received a response from the server.
+Ticks mean: Each tick means the response took TXXms where T is the 
+number of ticks heard.  Example: "<Ping> <Pong> <Tick> <Tick> means 
+the round-trip-time took between 200-300ms"
+

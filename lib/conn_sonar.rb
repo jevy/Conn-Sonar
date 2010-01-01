@@ -13,6 +13,6 @@ class ConnSonar
     result = i.ping?
     SoundPlayer.pong if result
     milliseconds = Integer(i.duration * 1000)
-    SoundPlayer.ticks(1 + milliseconds / 100)
+    SoundPlayer.ticks(milliseconds / 100)
   end
 end

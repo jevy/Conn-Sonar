@@ -44,7 +44,7 @@ describe ConnSonar do
 
     it 'should play 1 tick if pong takes less than 100ms' do
       @mock_icmp.stub!(:duration).and_return(0.050)
-      SoundPlayer.should_receive(:ticks).with(1)
+      SoundPlayer.should_receive(:ticks).with(0)
 
       c = ConnSonar.new('google.com')
       c.ping
@@ -53,7 +53,7 @@ describe ConnSonar do
     it 'should play 2 ticks if pong takes between 100-200ms' do
       @mock_icmp.stub!(:ping?).and_return(true)
       @mock_icmp.stub!(:duration).and_return(0.150)
-      SoundPlayer.should_receive(:ticks).with(2)
+      SoundPlayer.should_receive(:ticks).with(1)
 
       c = ConnSonar.new('farawayplace.com')
       c.ping
