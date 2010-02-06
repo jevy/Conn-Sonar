@@ -5,26 +5,26 @@ class SoundPlayer
   SDL::Mixer.open
 
   def self.ping
-    wave=SDL::Mixer::Wave.load('lib/sounds/ping.wav')
-    SDL::Mixer.playChannel(0,wave,0)
-    self.wait_for_sound_to_end
+    self.play 'lib/sounds/ping.wav'
   end
 
   def self.pong
-    wave=SDL::Mixer::Wave.load('lib/sounds/pong.wav')
-    SDL::Mixer.playChannel(0,wave,0)
-    self.wait_for_sound_to_end
+    self.play 'lib/sounds/pong.wav'
   end
 
   def self.ticks(number_of_ticks)
     number_of_ticks.times do
-      wave=SDL::Mixer::Wave.load('lib/sounds/tick.wav')
-      SDL::Mixer.playChannel(0,wave,0)
-      self.wait_for_sound_to_end
+      self.play 'lib/sounds/tick.wav'
     end
   end
 
   private
+
+  def self.play(filename)
+    wave=SDL::Mixer::Wave.load(filename)
+    SDL::Mixer.playChannel(0,wave,0)
+    self.wait_for_sound_to_end
+  end
 
   def self.wait_for_sound_to_end
     while SDL::Mixer::play?(0)
